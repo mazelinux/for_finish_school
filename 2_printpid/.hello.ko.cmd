@@ -1,1 +1,0 @@
-cmd_/work/for_finish_school/2_printpid/hello.ko := ld -r -m elf_x86_64 -T /usr/src/linux-headers-3.13.0-85-generic/scripts/module-common.lds --build-id  -o /work/for_finish_school/2_printpid/hello.ko /work/for_finish_school/2_printpid/hello.o /work/for_finish_school/2_printpid/hello.mod.o
