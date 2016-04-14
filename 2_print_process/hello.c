@@ -6,14 +6,15 @@ MODULE_LICENSE("Dual BSD/GPL");
 static int hello_init(void) {
 	int pid_no=current->pid;
 	struct task_struct * task=current;
-	printk(KERN_ALERT "current pid=%i  command=%s  state=%i",current->pid,current->comm,current->state);
+	printk(KERN_ALERT "current pid=%d  command=%s  state=%d",(int)current->pid,current->comm,(int)current->state);
 	//state -1 = unrunnable,0 = runnable, >0 = stopped
 	printk(KERN_ALERT "\n");
 	for_each_process(task) 
 	{
 		if(task->pid==pid_no) break;
 		//mm=task->active_mm;
-		printk(KERN_ALERT "process id = %d command= %s state= %i",(int)task->pid,task->comm,task->state);
+		printk(KERN_ALERT "process id = %d command= %s state= %d",(int)task->pid,task->comm,(int)task->state);
+		printk(KERN_ALERT "\n");
 	}
 	printk(KERN_ALERT "\n");
 	return 0;
