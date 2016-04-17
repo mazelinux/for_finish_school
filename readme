@@ -1,0 +1,2 @@
+cat /proc/kallsyms 
+all the function you can use on module build
