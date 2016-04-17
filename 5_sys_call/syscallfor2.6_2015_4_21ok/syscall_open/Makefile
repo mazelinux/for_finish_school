@@ -1,4 +1,5 @@
-obj-m :=getsyscall.o
+#obj-m :=getsyscall.o
+obj-m :=syscall.o
 EXTRA_CFLAGS := -Dsymname=sys_call_table
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
