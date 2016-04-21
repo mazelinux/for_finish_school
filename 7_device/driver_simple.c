@@ -11,9 +11,21 @@
 #include <linux/slab.h>
 #include <linux/uaccess.h>
 
+#include <linux/proc_fs.h>
+#include <linux/moduleparam.h>
+#include <linux/kernel.h>
+#include <linux/errno.h>
+#include <linux/types.h> 
+#include <linux/fcntl.h>
+#include <linux/seq_file.h>
+
 #include "driver_simple.h"
 MODULE_AUTHOR("Maze.ma");
-MODULE_LICENSE("Dual BSD/GPL");
+MODULE_LICENSE("GPL");
+//-----------------include----------------//
+//-----------------include----------------//
+//-----------------include----------------//
+//-----------------include----------------//
 
 static int driversimple_major = DRIVERSIMPLE_MAJOR;
 module_param(driversimple_major, int, S_IRUGO);
@@ -184,6 +196,7 @@ static loff_t driversimple_llseek(struct file *filp, loff_t offset, int orig)
 		return ret;
 }
 
+
 static const struct file_operations driversimple_fops =
 {
 		.owner = THIS_MODULE,
@@ -196,6 +209,31 @@ static const struct file_operations driversimple_fops =
 		.release = driversimple_release,
 };
 
+//-----------------proc----------------//
+//-----------------proc----------------//
+//-----------------proc----------------//
+//-----------------proc----------------//
+int driversimple_print(char *buf, char **start, off_t offset, int count, int *eof, void *data)
+{
+	printk(KERN_INFO "this section will printk the command's date");
+	return 0;
+}
+
+static void driversimple_create_proc(void)
+{
+	struct proc_dir_entry *entry;
+	entry = proc_create("dirversimple_file", 0, NULL, &driversimple_fops);//date=1,printk;date=2,syscall...
+}
+
+static void driversimple_remove_proc(void)
+{
+	remove_proc_entry("dirversimple_file", NULL);
+}
+
+//-----------------proc----------------//
+//-----------------proc----------------//
+//-----------------proc----------------//
+//-----------------proc----------------//
 /*init cdev*/
 static void driversimple_setup_cdev(struct driversimple_dev *dev, int index)
 {
@@ -236,19 +274,23 @@ static int __init  driversimple_init(void)
 		//  memset(globalmem_devp, 0, sizeof(struct globalmem_dev));
 
 		driversimple_setup_cdev(driversimple_devp, 0);
+		driversimple_create_proc();
 		return 0;
 
 fail_malloc: 
 		unregister_chrdev_region(devno, 1);
 		return result;
+	
 }
 
 /*模块卸载函数*/
 static void __exit driversimple_exit(void)
 {
+		driversimple_remove_proc();
 		cdev_del(&driversimple_devp->cdev);   /*注销cdev*/
 		kfree(driversimple_devp);     /*释放设备结构体内存*/
 		unregister_chrdev_region(MKDEV(driversimple_major, 0), 1); /*释放设备号*/
+		printk(KERN_INFO "exit success");
 }
 
 
