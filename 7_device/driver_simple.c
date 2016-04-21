@@ -213,16 +213,44 @@ static const struct file_operations driversimple_fops =
 //-----------------proc----------------//
 //-----------------proc----------------//
 //-----------------proc----------------//
-int driversimple_print(char *buf, char **start, off_t offset, int count, int *eof, void *data)
+
+static int driversimple_proc_show(struct seq_file *seq, void *v)
 {
-	printk(KERN_INFO "this section will printk the command's date");
+	unsigned int *ptr_var = seq->private;
+//	seq_printf(seq, "%u\n", *ptr_var);
 	return 0;
 }
+
+static ssize_t driversimple_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *ppos)
+{
+	struct seq_file *seq = file->private_data;
+	unsigned int *ptr_var = seq->private;
+	*ptr_var = simple_strtoul(buffer, NULL, 10);
+ 	return count;
+}
+
+static int driversimple_proc_open(struct inode *inode, struct file *file)
+{
+ 	return single_open(file, driversimple_proc_show, PDE_DATA(inode));
+}
+
+static const struct file_operations driversimple_proc_fops =
+{
+	.owner = THIS_MODULE,
+	.open = driversimple_proc_open,
+	.read =	seq_read,
+	.write = driversimple_proc_write,
+	.llseek = seq_lseek,
+	.release = single_release,
+};
 
 static void driversimple_create_proc(void)
 {
 	struct proc_dir_entry *entry;
-	entry = proc_create("dirversimple_file", 0, NULL, &driversimple_fops);//date=1,printk;date=2,syscall...
+	entry = proc_create_data("dirversimple_file", 0, NULL, &driversimple_fops, NULL);//date=1,printk;date=2,syscall...
+	//entry = proc_create_entry("dirversimple_file", 0, NULL);//date=1,printk;date=2,syscall...
+	if(entry)
+		return 0;
 }
 
 static void driversimple_remove_proc(void)
