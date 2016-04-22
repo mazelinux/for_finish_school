@@ -239,7 +239,7 @@ static const struct file_operations driversimple_proc_fops =
 	.owner = THIS_MODULE,
 	.open = driversimple_proc_open,
 	.read =	seq_read,
-	.write = driversimple_proc_write,
+//	.write = driversimple_proc_write,
 	.llseek = seq_lseek,
 	.release = single_release,
 };
@@ -247,7 +247,7 @@ static const struct file_operations driversimple_proc_fops =
 static void driversimple_create_proc(void)
 {
 	struct proc_dir_entry *entry;
-	entry = proc_create_data("dirversimple_file", 0, NULL, &driversimple_fops, NULL);//date=1,printk;date=2,syscall...
+	entry = proc_create_data("dirversimple_file", 0, NULL, &driversimple_proc_fops, NULL);//date=1,printk;date=2,syscall...
 	//entry = proc_create_entry("dirversimple_file", 0, NULL);//date=1,printk;date=2,syscall...
 	if(entry)
 		return 0;
@@ -278,6 +278,7 @@ static void driversimple_setup_cdev(struct driversimple_dev *dev, int index)
 /*设备驱动模块加载函数*/
 static int __init  driversimple_init(void)
 {
+		printk(KERN_INFO "init driversimple.ko\n");
 		int result;
 		dev_t devno = MKDEV(driversimple_major, 0);
 
@@ -318,7 +319,7 @@ static void __exit driversimple_exit(void)
 		cdev_del(&driversimple_devp->cdev);   /*注销cdev*/
 		kfree(driversimple_devp);     /*释放设备结构体内存*/
 		unregister_chrdev_region(MKDEV(driversimple_major, 0), 1); /*释放设备号*/
-		printk(KERN_INFO "exit success");
+		printk(KERN_INFO "exit success\n");
 }
 
 
