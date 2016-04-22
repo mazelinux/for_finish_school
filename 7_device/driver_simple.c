@@ -4,6 +4,10 @@
   The initial developer of the original code is Baohua Song
   <author@linuxdriver.cn>. All Rights Reserved.
   ======================================================================*/
+//-----------------include----------------//
+//-----------------include----------------//
+//-----------------include----------------//
+//-----------------include----------------//
 #include <linux/module.h>
 #include <linux/fs.h>
 #include <linux/init.h>
@@ -223,9 +227,10 @@ static int driversimple_proc_show(struct seq_file *seq, void *v)
 
 static ssize_t driversimple_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *ppos)
 {
+	char *stop_at = NULL;
 	struct seq_file *seq = file->private_data;
 	unsigned int *ptr_var = seq->private;
-	*ptr_var = simple_strtoul(buffer, NULL, 10);
+	*ptr_var = simple_strtoul(buffer, &stop_at, 10);
  	return count;
 }
 
@@ -239,12 +244,12 @@ static const struct file_operations driversimple_proc_fops =
 	.owner = THIS_MODULE,
 	.open = driversimple_proc_open,
 	.read =	seq_read,
-//	.write = driversimple_proc_write,
+	.write = driversimple_proc_write,
 	.llseek = seq_lseek,
 	.release = single_release,
 };
 
-static void driversimple_create_proc(void)
+static int driversimple_create_proc(void)
 {
 	struct proc_dir_entry *entry;
 	entry = proc_create_data("dirversimple_file", 0, NULL, &driversimple_proc_fops, NULL);//date=1,printk;date=2,syscall...
