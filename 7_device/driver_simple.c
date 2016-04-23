@@ -33,6 +33,33 @@ MODULE_LICENSE("GPL");
 //-----------------include----------------//
 //-----------------include----------------//
 
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+static void print_process(void){
+	//struct task_strcut *task_test = current;
+	//int pid_no = current->pid;
+	struct thread_info *ti;
+	struct task_struct *mycurrent;
+	int pid_no = current->pid;
+	ti = (struct thread_info *)(((unsigned long)&ti) & ~(0x1fff));
+	mycurrent = ti -> task;
+	for_each_process(mycurrent)
+	{
+		if (mycurrent->pid == pid_no) break;
+		//str += "process id = " + (int)task->pid;
+		//str += "command = " + task->command;
+		//str += "state = " + (int)task->state;
+		//str += "\n\0";
+		printk(KERN_INFO "process id = %d command= %s state= %d",(int)mycurrent->pid,mycurrent->comm,(int)mycurrent->state);
+	}
+}
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+
 static int driversimple_major = DRIVERSIMPLE_MAJOR;
 module_param(driversimple_major, int, S_IRUGO);
 
@@ -61,9 +88,6 @@ static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned lon
 {
 		int err = 0;
 		struct driversimple_dev *dev;
-		//int ret = 0;
-		//int ioarg = 0;
-
 		if (_IOC_TYPE(cmd) != DRIVERSIMPLE_MAGIC) 
 				return -EINVAL;
 		if (_IOC_NR(cmd) > DRIVERSIMPLE_MAXNR) 
@@ -81,22 +105,18 @@ static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned lon
 		switch (cmd)
 		{
 				case DRIVERSIMPLE_PRINT_PROCESS:
-						memset(dev->mem, 0, DRIVERSIMPLE_SIZE);      
-						printk(KERN_INFO "globalmem is set to zero/n");
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_PRINT_PROCESS:\n");
+						print_process();
 						break;
 				case DRIVERSIMPLE_SYS_CALL:
-						memset(dev->mem, 0, DRIVERSIMPLE_SIZE);      
-						printk(KERN_INFO "globalmem is set to zero/n");
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_CALL:\n");
 						break;
 				case DRIVERSIMPLE_SYS_IRT:
-						memset(dev->mem, 0, DRIVERSIMPLE_SIZE);      
-						printk(KERN_INFO "globalmem is set to zero/n");
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_IRT:\n");
 						break;
 				case DRIVERSIMPLE_SYS_ROAMING:
-						memset(dev->mem, 0, DRIVERSIMPLE_SIZE);      
-						printk(KERN_INFO "globalmem is set to zero/n");
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_ROAMING:\n");
 						break;
-
 				default:
 						return  - EINVAL;
 		}
@@ -295,32 +315,6 @@ static void driversimple_setup_cdev(struct driversimple_dev *dev, int index)
 				printk(KERN_NOTICE "Error %d adding LED%d", err, index);
 }
 
-//-----------------print_process----------------//
-//-----------------print_process----------------//
-//-----------------print_process----------------//
-//-----------------print_process----------------//
-static void print_process(void){
-	//struct task_strcut *task_test = current;
-	//int pid_no = current->pid;
-	struct thread_info *ti;
-	struct task_struct *mycurrent;
-	int pid_no = current->pid;
-	ti = (struct thread_info *)(((unsigned long)&ti) & ~(0x1fff));
-	mycurrent = ti -> task;
-	for_each_process(mycurrent)
-	{
-		if (mycurrent->pid == pid_no) break;
-		//str += "process id = " + (int)task->pid;
-		//str += "command = " + task->command;
-		//str += "state = " + (int)task->state;
-		//str += "\n\0";
-		printk(KERN_INFO "process id = %d command= %s state= %d",(int)mycurrent->pid,mycurrent->comm,(int)mycurrent->state);
-	}
-}
-//-----------------print_process----------------//
-//-----------------print_process----------------//
-//-----------------print_process----------------//
-//-----------------print_process----------------//
 
 /*设备驱动模块加载函数*/
 static int __init  driversimple_init(void)
@@ -351,7 +345,7 @@ static int __init  driversimple_init(void)
 
 		driversimple_setup_cdev(driversimple_devp, 0);
 		driversimple_create_proc();
-		print_process();
+//		print_process();
 		return 0;
 
 fail_malloc: 
