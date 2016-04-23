@@ -1,4 +1,4 @@
-obj-m := driver_simple.o
+obj-m := print_process.o driver_simple.o
 KERNELBUILD := /lib/modules/`uname -r`/build
 default:
 	make -C $(KERNELBUILD) M=$(shell pwd) modules

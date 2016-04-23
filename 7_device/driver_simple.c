@@ -4,9 +4,7 @@
   The initial developer of the original code is Baohua Song
   <author@linuxdriver.cn>. All Rights Reserved.
   ======================================================================*/
-//-----------------include----------------//
-//-----------------include----------------//
-//-----------------include----------------//
+
 //-----------------include----------------//
 #include <linux/module.h>
 #include <linux/fs.h>
@@ -29,13 +27,13 @@
 MODULE_AUTHOR("Maze.ma");
 MODULE_LICENSE("GPL");
 //-----------------include----------------//
-//-----------------include----------------//
-//-----------------include----------------//
-//-----------------include----------------//
 
-//-----------------print_process----------------//
-//-----------------print_process----------------//
-//-----------------print_process----------------//
+
+//-----------------extern function----------------//
+extern int print_process(void);
+//-----------------extern function----------------//
+
+
 //-----------------print_process----------------//
 static void print_process(void){
 	//struct task_strcut *task_test = current;
@@ -56,9 +54,7 @@ static void print_process(void){
 	}
 }
 //-----------------print_process----------------//
-//-----------------print_process----------------//
-//-----------------print_process----------------//
-//-----------------print_process----------------//
+
 
 static int driversimple_major = DRIVERSIMPLE_MAJOR;
 module_param(driversimple_major, int, S_IRUGO);
