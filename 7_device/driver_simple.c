@@ -23,6 +23,8 @@
 #include <linux/fcntl.h>
 #include <linux/seq_file.h>
 
+#include <linux/sched.h>
+
 #include "driver_simple.h"
 MODULE_AUTHOR("Maze.ma");
 MODULE_LICENSE("GPL");
@@ -55,11 +57,12 @@ int driversimple_release(struct inode *inode, struct file *filp)
 }
 
 /* ioctl function */
-static int driversimple_ioctl(struct inode *inodep, struct file *filp, unsigned	int cmd, unsigned long arg)
+static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 		int err = 0;
-		int ret = 0;
-		int ioarg = 0;
+		struct driversimple_dev *dev;
+		//int ret = 0;
+		//int ioarg = 0;
 
 		if (_IOC_TYPE(cmd) != DRIVERSIMPLE_MAGIC) 
 				return -EINVAL;
@@ -73,7 +76,7 @@ static int driversimple_ioctl(struct inode *inodep, struct file *filp, unsigned	
 		if (err) 
 				return -EFAULT;
 
-		struct driversimple_dev *dev = filp->private_data;/*get point*/
+		dev = filp->private_data;/*get point*/
 
 		switch (cmd)
 		{
@@ -126,7 +129,7 @@ static ssize_t driversimple_read(struct file *filp, char __user *buf, size_t siz
 				*ppos += count;
 				ret = count;
 
-				printk(KERN_INFO "read %d bytes(s) from %d/n", count, p);
+				printk(KERN_INFO "read %d bytes(s) from %d/n", (int)count, (int)p);
 		}
 
 		return ret;
@@ -153,7 +156,7 @@ static ssize_t driversimple_write(struct file *filp, const char __user *buf,
 				*ppos += count;
 				ret = count;
 
-				printk(KERN_INFO "written %d bytes(s) from %d/n", count, p);
+				printk(KERN_INFO "written %d bytes(s) from %d/n", (int)count, (int)p);
 		}
 
 		return ret;
@@ -265,8 +268,9 @@ static int driversimple_create_proc(void)
 		struct proc_dir_entry *entry;
 		entry = proc_create_data("dirversimple_file", 0, NULL, &driversimple_proc_fops, NULL);//date=1,printk;date=2,syscall...
 		//entry = proc_create_entry("dirversimple_file", 0, NULL);//date=1,printk;date=2,syscall...
-		if(entry)
-				return 0;
+		if(!entry)
+				return EFAULT;
+		return 0;
 }
 
 static void driversimple_remove_proc(void)
@@ -291,12 +295,39 @@ static void driversimple_setup_cdev(struct driversimple_dev *dev, int index)
 				printk(KERN_NOTICE "Error %d adding LED%d", err, index);
 }
 
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+static void print_process(void){
+	//struct task_strcut *task_test = current;
+	//int pid_no = current->pid;
+	struct thread_info *ti;
+	struct task_struct *mycurrent;
+	int pid_no = current->pid;
+	ti = (struct thread_info *)(((unsigned long)&ti) & ~(0x1fff));
+	mycurrent = ti -> task;
+	for_each_process(mycurrent)
+	{
+		if (mycurrent->pid == pid_no) break;
+		//str += "process id = " + (int)task->pid;
+		//str += "command = " + task->command;
+		//str += "state = " + (int)task->state;
+		//str += "\n\0";
+		printk(KERN_INFO "process id = %d command= %s state= %d",(int)mycurrent->pid,mycurrent->comm,(int)mycurrent->state);
+	}
+}
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+//-----------------print_process----------------//
+
 /*设备驱动模块加载函数*/
 static int __init  driversimple_init(void)
 {
-		printk(KERN_INFO "init driversimple.ko\n");
 		int result;
 		dev_t devno = MKDEV(driversimple_major, 0);
+		printk(KERN_INFO "init driversimple.ko\n");
 
 		/* 申请设备号*/
 		if (driversimple_major)
@@ -320,6 +351,7 @@ static int __init  driversimple_init(void)
 
 		driversimple_setup_cdev(driversimple_devp, 0);
 		driversimple_create_proc();
+		print_process();
 		return 0;
 
 fail_malloc: 
