@@ -35,7 +35,7 @@ extern int print_process(void);
 
 
 //-----------------print_process----------------//
-static void print_process(void){
+/*static void print_process(void){
 	//struct task_strcut *task_test = current;
 	//int pid_no = current->pid;
 	struct thread_info *ti;
@@ -52,7 +52,7 @@ static void print_process(void){
 		//str += "\n\0";
 		printk(KERN_INFO "process id = %d command= %s state= %d",(int)mycurrent->pid,mycurrent->comm,(int)mycurrent->state);
 	}
-}
+}*/
 //-----------------print_process----------------//
 
 
@@ -236,7 +236,7 @@ static const struct file_operations driversimple_fops =
 //-----------------proc----------------//
 //-----------------proc----------------//
 //-----------------proc----------------//
-static char *str = NULL;
+/*static char *str = NULL;
 
 static int driversimple_proc_show(struct seq_file *seq, void *v)
 {
@@ -293,7 +293,7 @@ static void driversimple_remove_proc(void)
 {
 		remove_proc_entry("dirversimple_file", NULL);
 }
-
+*/
 //-----------------proc----------------//
 //-----------------proc----------------//
 //-----------------proc----------------//
