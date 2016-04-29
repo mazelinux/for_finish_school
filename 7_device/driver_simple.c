@@ -30,30 +30,8 @@ MODULE_LICENSE("GPL");
 
 
 //-----------------extern function----------------//
-extern int print_process(void);
+//extern int print_process(void);
 //-----------------extern function----------------//
-
-
-//-----------------print_process----------------//
-/*static void print_process(void){
-	//struct task_strcut *task_test = current;
-	//int pid_no = current->pid;
-	struct thread_info *ti;
-	struct task_struct *mycurrent;
-	int pid_no = current->pid;
-	ti = (struct thread_info *)(((unsigned long)&ti) & ~(0x1fff));
-	mycurrent = ti -> task;
-	for_each_process(mycurrent)
-	{
-		if (mycurrent->pid == pid_no) break;
-		//str += "process id = " + (int)task->pid;
-		//str += "command = " + task->command;
-		//str += "state = " + (int)task->state;
-		//str += "\n\0";
-		printk(KERN_INFO "process id = %d command= %s state= %d",(int)mycurrent->pid,mycurrent->comm,(int)mycurrent->state);
-	}
-}*/
-//-----------------print_process----------------//
 
 
 static int driversimple_major = DRIVERSIMPLE_MAJOR;
@@ -102,7 +80,7 @@ static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned lon
 		{
 				case DRIVERSIMPLE_PRINT_PROCESS:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_PRINT_PROCESS:\n");
-						print_process();
+//						print_process();
 						break;
 				case DRIVERSIMPLE_SYS_CALL:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_CALL:\n");
@@ -231,73 +209,6 @@ static const struct file_operations driversimple_fops =
 		.open = driversimple_open,
 		.release = driversimple_release,
 };
-
-//-----------------proc----------------//
-//-----------------proc----------------//
-//-----------------proc----------------//
-//-----------------proc----------------//
-/*static char *str = NULL;
-
-static int driversimple_proc_show(struct seq_file *seq, void *v)
-{
-		seq_printf(seq, "%s\n", str);
-		return 0;
-}
-
-static ssize_t driversimple_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *ppos)
-{
-		//struct seq_file *seq = file->private_data;
-		//unsigned int *ptr_var = seq->private;
-		//*ptr_var = simple_strtoul(buffer, NULL, 10);
-		//return count;
-		//with error about null point
-		char *tmp = kzalloc((count+1), GFP_KERNEL);  
-		if(!tmp)  
-				return -ENOMEM;  
-		if(copy_from_user(tmp, buffer, count))  
-		{  
-				kfree(tmp);  
-				return EFAULT;  
-		}  
-		kfree(str);  
-		str = tmp;  
-		return count; 
-}
-
-static int driversimple_proc_open(struct inode *inode, struct file *file)
-{
-		return single_open(file, driversimple_proc_show, PDE_DATA(inode));
-}
-
-static const struct file_operations driversimple_proc_fops =
-{
-		.owner = THIS_MODULE,
-		.open = driversimple_proc_open,
-		.read =	seq_read,
-		.write = driversimple_proc_write,
-		.llseek = seq_lseek,
-		.release = single_release,
-};
-
-static int driversimple_create_proc(void)
-{
-		struct proc_dir_entry *entry;
-		entry = proc_create_data("dirversimple_file", 0, NULL, &driversimple_proc_fops, NULL);//date=1,printk;date=2,syscall...
-		//entry = proc_create_entry("dirversimple_file", 0, NULL);//date=1,printk;date=2,syscall...
-		if(!entry)
-				return EFAULT;
-		return 0;
-}
-
-static void driversimple_remove_proc(void)
-{
-		remove_proc_entry("dirversimple_file", NULL);
-}
-*/
-//-----------------proc----------------//
-//-----------------proc----------------//
-//-----------------proc----------------//
-//-----------------proc----------------//
 /*init cdev*/
 static void driversimple_setup_cdev(struct driversimple_dev *dev, int index)
 {
@@ -340,7 +251,6 @@ static int __init  driversimple_init(void)
 		//  memset(globalmem_devp, 0, sizeof(struct globalmem_dev));
 
 		driversimple_setup_cdev(driversimple_devp, 0);
-		driversimple_create_proc();
 //		print_process();
 		return 0;
 
@@ -353,7 +263,6 @@ fail_malloc:
 /*模块卸载函数*/
 static void __exit driversimple_exit(void)
 {
-		driversimple_remove_proc();
 		cdev_del(&driversimple_devp->cdev);   /*注销cdev*/
 		kfree(driversimple_devp);     /*释放设备结构体内存*/
 		unregister_chrdev_region(MKDEV(driversimple_major, 0), 1); /*释放设备号*/
