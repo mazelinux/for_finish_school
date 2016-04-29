@@ -27,6 +27,9 @@
 MODULE_AUTHOR("Maze.ma");
 MODULE_LICENSE("GPL");
 //-----------------include----------------//
+//-----------------export----------------//
+	extern int print_process(void);
+//-----------------export----------------//
 
 
 

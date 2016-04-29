@@ -1,4 +1,4 @@
-obj-m := hello.o
+obj-m := hello.o driver_simple.o
 KERNELBUILD :=/lib/modules/`uname -r`/build
 default:
 	make -C $(KERNELBUILD) M=$(shell pwd) modules
