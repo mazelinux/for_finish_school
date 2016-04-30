@@ -26,9 +26,4 @@
 #define DRIVERSIMPLE_SYS_ROAMING  	_IOW(DRIVERSIMPLE_MAGIC, 4, int)
 #define DRIVERSIMPLE_MAXNR 4
 
-struct driversimple_dev
-{
-	struct cdev cdev;
-	unsigned char mem[DRIVERSIMPLE_SIZE];
-};
 #endif /* _DRIVERSIMPLE_H_ */

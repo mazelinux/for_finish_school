@@ -31,8 +31,11 @@ MODULE_LICENSE("GPL");
 	extern int print_process(void);
 //-----------------export----------------//
 
-
-
+struct driversimple_dev
+{
+    struct cdev cdev;
+    unsigned char mem[DRIVERSIMPLE_SIZE];
+};
 
 static int driversimple_major = DRIVERSIMPLE_MAJOR;
 module_param(driversimple_major, int, S_IRUGO);
