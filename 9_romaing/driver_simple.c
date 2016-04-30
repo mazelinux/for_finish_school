@@ -44,7 +44,7 @@ int driversimple_open(struct inode *inode, struct file *filp)
 		/*将设备结构体指针赋值给文件私有数据指针*/
 		struct driversimple_dev *dev;
 		int num = MINOR(inode->i_rdev); 
-		if (num >= DRIVERSIMPLE_MAXNR)
+		if (num >= DRIVERSIMPLE_NR_DEVS)
 				return -ENODEV;
 		dev = &driversimple_devp[num];
 		filp->private_data = dev;
@@ -80,7 +80,7 @@ static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned lon
 		{
 				case DRIVERSIMPLE_PRINT_PROCESS:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_PRINT_PROCESS:\n");
-//						print_process();
+						print_process();
 						break;
 				case DRIVERSIMPLE_SYS_CALL:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_CALL:\n");
@@ -217,7 +217,7 @@ static void driversimple_setup_cdev(struct driversimple_dev *dev, int index)
 		cdev_init(&dev->cdev, &driversimple_fops);
 		dev->cdev.owner = THIS_MODULE;
 		dev->cdev.ops = &driversimple_fops;
-		err = cdev_add(&dev->cdev, devno, 1);
+		err = cdev_add(&dev->cdev, devno, DRIVERSIMPLE_NR_DEVS);
 		if (err)
 				printk(KERN_NOTICE "Error %d adding LED%d", err, index);
 }
@@ -248,7 +248,7 @@ static int __init  driversimple_init(void)
 				result =  - ENOMEM;
 				goto fail_malloc;
 		}
-		//  memset(globalmem_devp, 0, sizeof(struct globalmem_dev));
+		memset(driversimple_devp, 0, sizeof(struct driversimple_dev));
 
 		driversimple_setup_cdev(driversimple_devp, 0);
 		return 0;
