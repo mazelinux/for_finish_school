@@ -14,12 +14,17 @@ MODULE_LICENSE("GPL");
 //-----------------proc----------------//
 //-----------------proc----------------//
 //-----------------proc----------------//
-static char *str = NULL;
+char *str = NULL;//this size must given
 
 static int driversimple_proc_show(struct seq_file *seq, void *v)
 {
 		seq_printf(seq, "%s\n", str);
 		return 0;
+}
+
+	static int my_read(char* buffer,char** buffer_location,off_t off_set,int* buf_length,int* eof,void* data)
+{
+	
 }
 
 static ssize_t driversimple_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *ppos)
@@ -83,6 +88,7 @@ static void __exit remove_proc(void)
 	driversimple_remove_proc();
 }
 
+EXPORT_SYMBOL(str);
 module_init(create_proc);
 module_exit(remove_proc);
 	

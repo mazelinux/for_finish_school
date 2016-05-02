@@ -28,7 +28,8 @@ MODULE_AUTHOR("Maze.ma");
 MODULE_LICENSE("GPL");
 //-----------------include----------------//
 //-----------------export----------------//
-	extern int print_process(void);
+	extern int print_process(char *str);
+	extern char *str;
 //-----------------export----------------//
 
 struct driversimple_dev
@@ -60,45 +61,6 @@ int driversimple_release(struct inode *inode, struct file *filp)
 		return 0;
 }
 
-/* ioctl function */
-static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
-{
-		int err = 0;
-		struct driversimple_dev *dev;
-		if (_IOC_TYPE(cmd) != DRIVERSIMPLE_MAGIC) 
-				return -EINVAL;
-		if (_IOC_NR(cmd) > DRIVERSIMPLE_MAXNR) 
-				return -EINVAL;
-
-		if (_IOC_DIR(cmd) & _IOC_READ)
-				err = !access_ok(VERIFY_WRITE, (void *)arg, _IOC_SIZE(cmd));
-		else if (_IOC_DIR(cmd) & _IOC_WRITE)
-				err = !access_ok(VERIFY_READ, (void *)arg, _IOC_SIZE(cmd));
-		if (err) 
-				return -EFAULT;
-
-		dev = filp->private_data;/*get point*/
-
-		switch (cmd)
-		{
-				case DRIVERSIMPLE_PRINT_PROCESS:
-						printk(KERN_INFO "Choose function DRIVERSIMPLE_PRINT_PROCESS:\n");
-						print_process();
-						break;
-				case DRIVERSIMPLE_SYS_CALL:
-						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_CALL:\n");
-						break;
-				case DRIVERSIMPLE_SYS_IRT:
-						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_IRT:\n");
-						break;
-				case DRIVERSIMPLE_SYS_ROAMING:
-						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_ROAMING:\n");
-						break;
-				default:
-						return  - EINVAL;
-		}
-		return 0;
-}
 
 /*read function*/
 static ssize_t driversimple_read(struct file *filp, char __user *buf, size_t size,
@@ -200,6 +162,45 @@ static loff_t driversimple_llseek(struct file *filp, loff_t offset, int orig)
 		return ret;
 }
 
+/* ioctl function */
+static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+		int err = 0;
+		struct driversimple_dev *dev;
+		if (_IOC_TYPE(cmd) != DRIVERSIMPLE_MAGIC) 
+				return -EINVAL;
+		if (_IOC_NR(cmd) > DRIVERSIMPLE_MAXNR) 
+				return -EINVAL;
+
+		if (_IOC_DIR(cmd) & _IOC_READ)
+				err = !access_ok(VERIFY_WRITE, (void *)arg, _IOC_SIZE(cmd));
+		else if (_IOC_DIR(cmd) & _IOC_WRITE)
+				err = !access_ok(VERIFY_READ, (void *)arg, _IOC_SIZE(cmd));
+		if (err) 
+				return -EFAULT;
+
+		dev = filp->private_data;/*get point*/
+
+		switch (cmd)
+		{
+				case DRIVERSIMPLE_PRINT_PROCESS:
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_PRINT_PROCESS:\n");
+						print_process(str);
+						break;
+				case DRIVERSIMPLE_SYS_CALL:
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_CALL:\n");
+						break;
+				case DRIVERSIMPLE_SYS_IRT:
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_IRT:\n");
+						break;
+				case DRIVERSIMPLE_SYS_ROAMING:
+						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_ROAMING:\n");
+						break;
+				default:
+						return  - EINVAL;
+		}
+		return 0;
+}
 
 static const struct file_operations driversimple_fops =
 {
