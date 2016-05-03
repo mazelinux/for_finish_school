@@ -1,17 +1,18 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/sched.h>
+#include <linux/slab.h>
 MODULE_LICENSE("Dual BSD/GPL");
 
 int print_process(char *str) {
 	int j;
-	char *tmp = kzalloc((count+1), GFP_KERNEL);//count must have a given number
+	char *tmp = kzalloc((4000), GFP_KERNEL);//count must have a given number
 	int pid_no=current->pid;
 	struct task_struct * task=current;
 		j = sprintf(tmp, "process id = %d command= %s state= %d\n",(int)pid_no,current->comm,(int)current->state);
 	for_each_process(task) 
 	{
-		if(task->pid==pid_no) break;
+		if(task->pid > 50) break;
 		j += sprintf(tmp+j, "process id = %d command= %s state= %d\n",(int)task->pid,task->comm,(int)task->state);
 	}
 	kfree(str);
