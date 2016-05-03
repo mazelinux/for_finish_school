@@ -22,11 +22,6 @@ static int driversimple_proc_show(struct seq_file *seq, void *v)
 		return 0;
 }
 
-	static int my_read(char* buffer,char** buffer_location,off_t off_set,int* buf_length,int* eof,void* data)
-{
-	
-}
-
 static ssize_t driversimple_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *ppos)
 {
 		//struct seq_file *seq = file->private_data;
