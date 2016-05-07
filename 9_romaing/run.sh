@@ -18,7 +18,9 @@ insmod $PRINT
 insmod $SYSCALL
 insmod $IDT
 insmod $DRIVER
-mknod /dev/$(DEVICE) c 230 0
+
+mknod /dev/$DEVICE c 230 0
+
 if [[ $? == 0 ]];then
 	echo "register ok"
 fi

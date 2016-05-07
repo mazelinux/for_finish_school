@@ -4,6 +4,8 @@
 #include <linux/slab.h>
 MODULE_LICENSE("Dual BSD/GPL");
 
+char *str = NULL;
+
 int print_process(char *str) {
 	int j;
 	char *tmp = kzalloc((4000), GFP_KERNEL);//count must have a given number
@@ -44,6 +46,7 @@ static void hello_exit(void) {
 module_init(hello_init);
 module_exit(hello_exit);
 EXPORT_SYMBOL(print_process);
+EXPORT_SYMBOL(str);
 
 
 

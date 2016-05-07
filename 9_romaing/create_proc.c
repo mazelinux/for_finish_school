@@ -14,8 +14,8 @@ MODULE_LICENSE("GPL");
 //-----------------proc----------------//
 //-----------------proc----------------//
 //-----------------proc----------------//
-char *str = NULL;//this size must given
-
+//char *str = NULL;//this size must given
+extern char *str;
 static int driversimple_proc_show(struct seq_file *seq, void *v)
 {
 		seq_printf(seq, "%s\n", str);
@@ -83,7 +83,7 @@ static void __exit remove_proc(void)
 	driversimple_remove_proc();
 }
 
-EXPORT_SYMBOL(str);
+//EXPORT_SYMBOL(str);
 module_init(create_proc);
 module_exit(remove_proc);
 	
