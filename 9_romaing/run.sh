@@ -9,6 +9,7 @@ DEVICE=driver_simple
 if [[ $EUID -ne 0 ]]; then
   echo "You must be a root user" 2>&1
   exit 1
+fi
 
 make
 
@@ -20,4 +21,4 @@ insmod $DRIVER
 mknod /dev/$(DEVICE) c 230 0
 if [[ $? == 0 ]];then
 	echo "register ok"
-	exit 1
+fi

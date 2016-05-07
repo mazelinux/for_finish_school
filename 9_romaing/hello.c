@@ -7,8 +7,8 @@ MODULE_LICENSE("Dual BSD/GPL");
 int print_process(char *str) {
 	int j;
 	char *tmp = kzalloc((4000), GFP_KERNEL);//count must have a given number
-	int pid_no=current->pid;
-	struct task_struct * task=current;
+	int pid_no = current->pid;
+	struct task_struct * task = current;
 		j = sprintf(tmp, "process id = %d command= %s state= %d\n",(int)pid_no,current->comm,(int)current->state);
 	for_each_process(task) 
 	{
