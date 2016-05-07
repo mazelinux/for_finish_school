@@ -28,7 +28,7 @@ MODULE_AUTHOR("Maze.ma");
 MODULE_LICENSE("GPL");
 //-----------------include----------------//
 //-----------------export----------------//
-	extern int print_process(char *str);
+	extern char* print_process(char *str);
 	extern char *str;
 //-----------------export----------------//
 
@@ -185,7 +185,7 @@ static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned lon
 		{
 				case DRIVERSIMPLE_PRINT_PROCESS:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_PRINT_PROCESS:\n");
-						print_process(str);
+						str = print_process(str);
 						break;
 				case DRIVERSIMPLE_SYS_CALL:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_CALL:\n");

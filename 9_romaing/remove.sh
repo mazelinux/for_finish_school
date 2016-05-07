@@ -16,7 +16,7 @@ rmmod $PRINT
 rmmod $SYSCALL
 rmmod $IDT
 rmmod $DRIVER
-
+rm /dev/$DRIVER
 make clean
 
 if [[ $? == 0 ]];then

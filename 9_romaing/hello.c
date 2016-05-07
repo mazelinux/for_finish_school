@@ -6,7 +6,7 @@ MODULE_LICENSE("Dual BSD/GPL");
 
 char *str = NULL;
 
-int print_process(char *str) {
+char* print_process(char *str) {
 	int j;
 	char *tmp = kzalloc((4000), GFP_KERNEL);//count must have a given number
 	int pid_no = current->pid;
@@ -19,7 +19,7 @@ int print_process(char *str) {
 	}
 	kfree(str);
 	str = tmp;
-	return j;
+	return tmp;
 }
 
 static int hello_init(void) {
