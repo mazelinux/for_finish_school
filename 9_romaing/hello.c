@@ -6,7 +6,8 @@ MODULE_LICENSE("Dual BSD/GPL");
 
 char *str = NULL;
 
-char* print_process(char *str) {
+//char* print_process(char *str) {
+char* print_process(void) {
 	int j;
 	char *tmp = kzalloc((4000), GFP_KERNEL);//count must have a given number
 	int pid_no = current->pid;
@@ -17,8 +18,8 @@ char* print_process(char *str) {
 		if(task->pid > 50) break;
 		j += sprintf(tmp+j, "process id = %d command= %s state= %d\n",(int)task->pid,task->comm,(int)task->state);
 	}
-	kfree(str);
-	str = tmp;
+//	kfree(str);
+//	str = tmp;
 	return tmp;
 }
 
