@@ -11,12 +11,12 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 
+rmmod $DRIVER
+rm /dev/$DRIVER
 rmmod $PROC
 rmmod $PRINT
 rmmod $SYSCALL
 rmmod $IDT
-rmmod $DRIVER
-rm /dev/$DRIVER
 make clean
 
 if [[ $? == 0 ]];then

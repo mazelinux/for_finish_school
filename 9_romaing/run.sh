@@ -13,8 +13,8 @@ fi
 
 make
 
-insmod $PROC
 insmod $PRINT
+insmod $PROC
 insmod $SYSCALL
 insmod $IDT
 insmod $DRIVER

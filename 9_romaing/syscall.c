@@ -51,7 +51,7 @@ void no_sys_call_for_test(void){
 int init_module(void) {
 		printk(KERN_INFO "This is a test for syscall \n");
 		printk(KERN_INFO "mkdir=%p\n",__NR_mkdir);
-		sys_call_for_test();
+	//	sys_call_for_test();
 		//original_open = (void*)*(sys_call_table + __NR_open);
 		printk(KERN_INFO "original_mkdir=%p\n",original_mkdir);
 		//*(sys_call_table + __NR_open) = (unsigned long)hijack_open;
@@ -59,6 +59,9 @@ int init_module(void) {
 		return 0;
 }
 void cleanup_module(void) {
-		no_sys_call_for_test();
+	//	no_sys_call_for_test();
 		printk(KERN_INFO "rmmod success\n");
 }
+
+EXPORT_SYMBOL(sys_call_for_test);
+EXPORT_SYMBOL(no_sys_call_for_test);

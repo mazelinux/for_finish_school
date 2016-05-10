@@ -31,6 +31,8 @@ MODULE_LICENSE("GPL");
 	//extern char* print_process(char *str);
 	extern char* print_process(void);
 	extern char *str;
+	extern void sys_call_for_test(void);
+	extern void no_sys_call_for_test(void);
 //-----------------export----------------//
 
 struct driversimple_dev
@@ -190,6 +192,7 @@ static long driversimple_ioctl(struct file *filp, unsigned int cmd, unsigned lon
 						break;
 				case DRIVERSIMPLE_SYS_CALL:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_CALL:\n");
+						sys_call_for_test();
 						break;
 				case DRIVERSIMPLE_SYS_IRT:
 						printk(KERN_INFO "Choose function DRIVERSIMPLE_SYS_IRT:\n");
