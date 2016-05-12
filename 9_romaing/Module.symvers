@@ -1,1 +1,4 @@
-0x633330fa	print_process	/work/for_finish_school/9_romaing/hello	EXPORT_SYMBOL
+0x61b2c2d1	str	/work/for_finish_school/9_romaing/hello	EXPORT_SYMBOL
+0x391a9713	sys_call_for_test	/work/for_finish_school/9_romaing/syscall	EXPORT_SYMBOL
+0xb5a88dde	print_process	/work/for_finish_school/9_romaing/hello	EXPORT_SYMBOL
+0x6d0ce54a	no_sys_call_for_test	/work/for_finish_school/9_romaing/syscall	EXPORT_SYMBOL

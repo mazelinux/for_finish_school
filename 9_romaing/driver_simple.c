@@ -236,7 +236,7 @@ static int __init  driversimple_init(void)
 {
 		int result;
 		dev_t devno = MKDEV(driversimple_major, 0);
-		printk(KERN_INFO "init driversimple.ko\n");
+		printk(KERN_INFO "Insmod driversimple.ko\n");
 
 		/* 申请设备号*/
 		if (driversimple_major)
@@ -273,7 +273,7 @@ static void __exit driversimple_exit(void)
 		cdev_del(&driversimple_devp->cdev);   /*注销cdev*/
 		kfree(driversimple_devp);     /*释放设备结构体内存*/
 		unregister_chrdev_region(MKDEV(driversimple_major, 0), 1); /*释放设备号*/
-		printk(KERN_INFO "exit success\n");
+		printk(KERN_INFO "Rmmod driver_simple.ko\n");
 }
 
 

@@ -74,6 +74,7 @@ static void driversimple_remove_proc(void)
 
 static int __init create_proc(void)
 {
+	printk(KERN_INFO "Insmod create_proc.ko\n");
 	driversimple_create_proc();
 	return 0;
 }
@@ -81,6 +82,7 @@ static int __init create_proc(void)
 static void __exit remove_proc(void)
 {	
 	driversimple_remove_proc();
+	printk(KERN_INFO "Rmmod create_proc.ko\n");
 }
 
 //EXPORT_SYMBOL(str);
