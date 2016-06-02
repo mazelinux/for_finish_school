@@ -20,7 +20,7 @@ rmmod $IDT
 make clean
 
 if [[ $? == 0 ]];then
-    echo "register ok"
+    echo "clean ok"
 fi
 
 

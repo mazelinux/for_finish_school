@@ -1,7 +1,11 @@
 #include <asm/unistd.h>
 #include <linux/module.h>
 #include <linux/highmem.h>
+
 MODULE_LICENSE("GPL");
+
+	extern char *str;
+
 // 由于sys_call_table符号不再被导出，需要hardcode地址，
 // 地址需要在bash下键入下面命令进行查找：
 // $ grep sys_call_table /boot/System.map-`uname -r`
@@ -14,9 +18,12 @@ return original_open(filename, flags, mode);
 }*/
 
 asmlinkage int (*original_mkdir)(const char *);
-asmlinkage int hijack_mkdir(const char *filename) {
+asmlinkage int hijack_mkdir(const char *filename, char *tmp, int j) {
 		// do hijack logic, just print the parameter
-		printk(KERN_INFO "hijack: mkdir filename=(%s)\n", filename);
+		const char *tmp = kzalloc((100), GFP_KERNEL);
+		const j = 0;
+		j += sprintf(tmp+j, "hijack: mkdir filename=(%s)\n", filename);
+		str = &tmp;
 		return original_mkdir(filename);
 }
 
@@ -35,7 +42,7 @@ int make_rw(unsigned long address) {
 		return 0;
 }
 
-void sys_call_for_test(void){
+char* sys_call_for_test(void){
 		make_rw((unsigned long)sys_call_table);
 		original_mkdir = (void*)*(sys_call_table + __NR_mkdir);
 		*(sys_call_table + __NR_mkdir) = (unsigned long)hijack_mkdir;
