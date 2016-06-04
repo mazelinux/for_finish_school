@@ -30,7 +30,7 @@ MODULE_LICENSE("GPL");
 //-----------------export----------------//
 	//extern char* print_process(char *str);
 	extern char* print_process(void);
-	extern char *str;
+	char *str;
 	extern void sys_call_for_test(void);
 	extern void no_sys_call_for_test(void);
 //-----------------export----------------//

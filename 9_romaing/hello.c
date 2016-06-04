@@ -4,7 +4,7 @@
 #include <linux/slab.h>
 MODULE_LICENSE("Dual BSD/GPL");
 
-//char *str = NULL;
+char *str = NULL;
 
 //char* print_process(char *str) {
 char* print_process(void) {
@@ -47,4 +47,4 @@ static void hello_exit(void) {
 module_init(hello_init);
 module_exit(hello_exit);
 EXPORT_SYMBOL(print_process);
-//EXPORT_SYMBOL(str);
+EXPORT_SYMBOL(str);

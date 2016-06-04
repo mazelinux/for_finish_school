@@ -1,15 +1,17 @@
 #include <asm/unistd.h>
 #include <linux/module.h>
 #include <linux/highmem.h>
+#include <linux/slab.h>
 
 MODULE_LICENSE("GPL");
 
-	extern char *str;
-
+extern char *str;
 // 由于sys_call_table符号不再被导出，需要hardcode地址，
 // 地址需要在bash下键入下面命令进行查找：
 // $ grep sys_call_table /boot/System.map-`uname -r`
 unsigned long *sys_call_table = (unsigned long*) 0xffffffff81801400;
+int j = 0;
+char *tmp;
 //asmlinkage int (*original_open)(const char *, int, int);
 /*asmlinkage int hijack_open(const char *filename, int flags, int mode) {
 // do hijack logic, just print the parameter
@@ -18,12 +20,10 @@ return original_open(filename, flags, mode);
 }*/
 
 asmlinkage int (*original_mkdir)(const char *);
-asmlinkage int hijack_mkdir(const char *filename, char *tmp, int j) {
+asmlinkage int hijack_mkdir(const char *filename) {
 		// do hijack logic, just print the parameter
-		const char *tmp = kzalloc((100), GFP_KERNEL);
-		const j = 0;
 		j += sprintf(tmp+j, "hijack: mkdir filename=(%s)\n", filename);
-		str = &tmp;
+		str = tmp;
 		return original_mkdir(filename);
 }
 
@@ -42,8 +42,9 @@ int make_rw(unsigned long address) {
 		return 0;
 }
 
-char* sys_call_for_test(void){
+void sys_call_for_test(void){
 		make_rw((unsigned long)sys_call_table);
+		tmp = kzalloc((100), GFP_KERNEL);
 		original_mkdir = (void*)*(sys_call_table + __NR_mkdir);
 		*(sys_call_table + __NR_mkdir) = (unsigned long)hijack_mkdir;
 		make_ro((unsigned long)sys_call_table);
