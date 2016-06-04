@@ -28,7 +28,6 @@ MODULE_AUTHOR("Maze.ma");
 MODULE_LICENSE("GPL");
 //-----------------include----------------//
 //-----------------export----------------//
-	//extern char* print_process(char *str);
 	extern char* print_process(void);
 	char *str;
 	extern void sys_call_for_test(void);
@@ -212,7 +211,6 @@ static const struct file_operations driversimple_fops =
 		.llseek = driversimple_llseek,
 		.read = driversimple_read,
 		.write = driversimple_write,
-		//.compat_ioctl = driversimple_ioctl,
 		.unlocked_ioctl = driversimple_ioctl,
 		.open = driversimple_open,
 		.release = driversimple_release,

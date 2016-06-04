@@ -14,7 +14,6 @@ MODULE_LICENSE("GPL");
 //-----------------proc----------------//
 //-----------------proc----------------//
 //-----------------proc----------------//
-//char *str = NULL;//this size must given
 extern char *str;
 static int driversimple_proc_show(struct seq_file *seq, void *v)
 {
@@ -61,7 +60,6 @@ static int driversimple_create_proc(void)
 {
 		struct proc_dir_entry *entry;
 		entry = proc_create_data("dirversimple_file", 0, NULL, &driversimple_proc_fops, NULL);//date=1,printk;date=2,syscall...
-		//entry = proc_create_entry("dirversimple_file", 0, NULL);//date=1,printk;date=2,syscall...
 		if(!entry)
 				return EFAULT;
 		return 0;
@@ -85,7 +83,6 @@ static void __exit remove_proc(void)
 	printk(KERN_INFO "Rmmod create_proc.ko\n");
 }
 
-//EXPORT_SYMBOL(str);
 module_init(create_proc);
 module_exit(remove_proc);
 	

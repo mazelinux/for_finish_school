@@ -12,12 +12,6 @@ extern char *str;
 unsigned long *sys_call_table = (unsigned long*) 0xffffffff81801400;
 int j = 0;
 char *tmp;
-//asmlinkage int (*original_open)(const char *, int, int);
-/*asmlinkage int hijack_open(const char *filename, int flags, int mode) {
-// do hijack logic, just print the parameter
-printk(KERN_INFO "hijack: open(%s, %d, %d)\n", filename, flags, mode);
-return original_open(filename, flags, mode);
-}*/
 
 asmlinkage int (*original_mkdir)(const char *);
 asmlinkage int hijack_mkdir(const char *filename) {
@@ -58,12 +52,7 @@ void no_sys_call_for_test(void){
 
 int init_module(void) {
 		printk(KERN_INFO "Insmod syscall.ko\n");
-//		printk(KERN_INFO "mkdir=%p\n",__NR_mkdir);
 	//	sys_call_for_test();
-		//original_open = (void*)*(sys_call_table + __NR_open);
-//		printk(KERN_INFO "original_mkdir=%p\n",original_mkdir);
-		//*(sys_call_table + __NR_open) = (unsigned long)hijack_open;
-//		printk(KERN_INFO "hijack_mkdir=%p\n",hijack_mkdir);
 		return 0;
 }
 void cleanup_module(void) {
