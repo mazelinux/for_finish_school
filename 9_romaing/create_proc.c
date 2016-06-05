@@ -14,7 +14,9 @@ MODULE_LICENSE("GPL");
 //-----------------proc----------------//
 //-----------------proc----------------//
 //-----------------proc----------------//
+//-----------------export----------------//
 extern char *str;
+//-----------------export----------------//
 static int driversimple_proc_show(struct seq_file *seq, void *v)
 {
 		seq_printf(seq, "%s\n", str);

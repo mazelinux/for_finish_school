@@ -4,7 +4,9 @@
 #include <linux/slab.h>
 MODULE_LICENSE("Dual BSD/GPL");
 
-char *str = NULL;
+//-----------------export----------------//
+extern char *str;
+//-----------------export----------------//
 
 char* print_process(void) {
 	int j;

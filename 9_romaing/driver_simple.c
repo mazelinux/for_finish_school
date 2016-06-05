@@ -279,4 +279,4 @@ static void __exit driversimple_exit(void)
 
 module_init(driversimple_init);
 module_exit(driversimple_exit);
-
+EXPORT_SYMBOL(str);

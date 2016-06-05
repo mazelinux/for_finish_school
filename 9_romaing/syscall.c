@@ -5,7 +5,9 @@
 
 MODULE_LICENSE("GPL");
 
+//-----------------export----------------//
 extern char *str;
+//-----------------export----------------//
 // 由于sys_call_table符号不再被导出，需要hardcode地址，
 // 地址需要在bash下键入下面命令进行查找：
 // $ grep sys_call_table /boot/System.map-`uname -r`
