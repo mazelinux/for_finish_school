@@ -1,2 +1,4 @@
-cat /proc/kallsyms 
 all the function you can use on module build
+some .c can build to be some .ko
+eeeeeee,just make sure your kernel version is 3.0+
+just use make command on the Makefile
